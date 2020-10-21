@@ -44,6 +44,16 @@ include(warnings)
 include(coverage)
 include(sanitizers)
 
+# Add seq_align library target
+add_library(seq_align STATIC seq_align/seq_align.h
+        seq_align/alignment_macros.h
+        seq_align/alignment_scoring.h seq_align/alignment_scoring.c
+        seq_align/alignment.h seq_align/alignment.c
+        seq_align/needleman_wunsch.h seq_align/needleman_wunsch.c)
+
+target_include_directories(seq_align PUBLIC seq_align)
+
+
 # Add lancet core library target
 add_library(lancet_core STATIC
         include/lancet/assert_macro.h include/lancet/log_macros.h
@@ -103,7 +113,7 @@ target_include_directories(lancet_core PUBLIC include PRIVATE ${CMAKE_BINARY_DIR
 target_link_libraries(lancet_core
         PUBLIC concurrentqueue absl::status absl::flat_hash_map absl::flat_hash_set absl::str_format absl::status
                absl::statusor absl::fixed_array absl::inlined_vector absl::span absl::time absl::random_random
-        PRIVATE CLI11 absl::failure_signal_handler absl::strings spdlog::spdlog ${LIBHTS}
+        PRIVATE CLI11 absl::failure_signal_handler absl::strings spdlog::spdlog seq_align ${LIBHTS}
         INTERFACE ZLIB::ZLIB BZip2::BZip2 CURL::libcurl OpenSSL::Crypto ${LIBLZMA_LIBRARIES})
 set_target_properties(lancet_core PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON POSITION_INDEPENDENT_CODE 1)
 

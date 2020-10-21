@@ -15,8 +15,11 @@ static constexpr char ALIGN_GAP = '-';
 #endif
 
 struct AlignedSequences {
-  std::string ref;
-  std::string qry;
+  AlignedSequences() = default;
+  AlignedSequences(std::string a, std::string b) : ref(std::move(a)), qry(std::move(b)) {}
+
+  std::string ref{};
+  std::string qry{};
 };
 
 struct AlignedSequencesView {
